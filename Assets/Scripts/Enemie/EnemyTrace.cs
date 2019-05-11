@@ -22,8 +22,6 @@ public class EnemyTrace : MonoBehaviour
         float granaryTopBorder = granary.transform.position.z + (granary.transform.localScale.z / 2);
         float granaryBotBorder = granary.transform.position.z - (granary.transform.localScale.z / 2);
 
-        Debug.Log(granaryBotBorder + ", " + granaryLeftBorder + ", " + granaryTopBorder + ", " + granaryRightBorder);
-
         if (transform.position.x < granaryLeftBorder)
         {
             transform.position = new Vector3(transform.position.x + speed, transform.position.y, transform.position.z);
@@ -54,7 +52,7 @@ public class EnemyTrace : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name);
+        //Debug.Log(other.name);
 
         var playerBase = other.GetComponent<PlayerBase>();
 

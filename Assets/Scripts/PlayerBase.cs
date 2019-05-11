@@ -6,9 +6,15 @@ using UnityEngine.UI;
 public class PlayerBase : MonoBehaviour
 {
     public static PlayerBase Instance { get; private set; }
+    [SerializeField]
+    float startHP = 100;
+
+    public float currentHP  { get; set; }
 
     private void Awake()
     {
+        currentHP = 100;
+
         if (Instance == null)
         {
             Instance = this;
@@ -21,10 +27,7 @@ public class PlayerBase : MonoBehaviour
 
     }
 
-    [SerializeField]
-    float startHP = 100;
-
-    float currentHP = 100;
+    
 
     public void ApplyDamage(float damage)
     {
