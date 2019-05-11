@@ -43,6 +43,7 @@ public class Boosts : MonoBehaviour
         player.activeBoost = bType;
         Destroy(gameObject);
 
+        BoostsRespawnRange.boostsOnScene--;
     }
 
 }

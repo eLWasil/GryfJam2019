@@ -7,6 +7,7 @@ public class BoostsRespawnRange : MonoBehaviour
 {
     public GameObject boostsPrefab;
     public Vector2 size;
+    public static int boostsOnScene = 0;
     private Stopwatch stopwatch = new Stopwatch();
 
     // Start is called before the first frame update
@@ -18,14 +19,15 @@ public class BoostsRespawnRange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (stopwatch.ElapsedMilliseconds >= 1000)
+        if (stopwatch.ElapsedMilliseconds >= 10000 && boostsOnScene <= 3)
         {
+            boostsOnScene++;
+
             float xPos = Random.Range(-size.x / 2, size.x / 2);
             float zPos = Random.Range(-size.y / 2, size.y / 2);
 
             var boost = Instantiate(boostsPrefab, transform.position + new Vector3(xPos, 6, zPos), Quaternion.identity);
             boost.transform.SetParent(transform);
-            Destroy(boost, 15);
 
             stopwatch.Restart();
             stopwatch.Start();
