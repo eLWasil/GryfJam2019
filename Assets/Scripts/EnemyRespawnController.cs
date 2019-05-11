@@ -9,12 +9,21 @@ public class EnemyRespawnController : MonoBehaviour
 
     private Stopwatch stopwatch = new Stopwatch();
     private const int respawnTimeMiliseconds = 400;
-    
+
+    private readonly List<EnemyTrace> enemiesList = new List<EnemyTrace>();
 
     // Start is called before the first frame update
     void Start()
     {
         stopwatch.Start();
+    }
+
+    void InitializePool()
+    {
+        for (int i = 0; i < 20; i++)
+        {
+            var enemy = Instantiate(enemiePrefab, transform).GetComponent<EnemyTrace>();
+        }
     }
 
     // Update is called once per frame
@@ -27,7 +36,7 @@ public class EnemyRespawnController : MonoBehaviour
             bool isRespawnHorizontal = randomBoolean();
 
             float shortRangePosition = Random.Range(40.0f, 50.0f);
-            float  longRangePosition = Random.Range(-50.0f, 50.0f);
+            float longRangePosition = Random.Range(-50.0f, 50.0f);
 
             float xPos = 0;
             float zPos = 0;
