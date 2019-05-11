@@ -1,33 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Rewired;
 
-public class PlayerInput : MonoBehaviour
+public class Player : MonoBehaviour
 {
-    public enum PlayerId
-    {
-        none = 0,
-        pad_1 = 1,
-        pad_2 = 2,
-        pad_3 = 3,
-        pad_4 = 4,
-    }
-    public enum InputActions
-    {
-        Vertical = 0,
-        Horizontal = 1,
-        RightVertical = 2,
-        RightHorizontal = 3,
-        Attack = 4,
-        Cancel = 5,
-        Menu = 6
-    }
-
     [SerializeField]
-    private PlayerId playerId = PlayerId.none;
+    PlayerId playerId = PlayerId.none;
 
-    private Player RewiredPlayer { get { return ReInput.players.GetPlayer((int)playerId - 1); } }
+    Rewired.Player RewiredPlayer { get { return Rewired.ReInput.players.GetPlayer((int)playerId - 1); } }
+
+    public PlayerId ID { get { return playerId; } }
 
     public bool GetButtonDown(InputActions input)
     {
@@ -48,4 +30,23 @@ public class PlayerInput : MonoBehaviour
     {
         return RewiredPlayer.GetAxis(input.ToString());
     }
+}
+
+public enum PlayerId
+{
+    none = 0,
+    pad_1 = 1,
+    pad_2 = 2,
+    pad_3 = 3,
+    pad_4 = 4,
+}
+public enum InputActions
+{
+    Vertical = 0,
+    Horizontal = 1,
+    RightVertical = 2,
+    RightHorizontal = 3,
+    Attack = 4,
+    Cancel = 5,
+    Menu = 6
 }

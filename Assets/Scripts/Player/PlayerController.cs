@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(Player))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
@@ -13,11 +13,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     float rotationSpeed = 500;
 
-    PlayerInput playerInput;
+    Player player;
+    new Rigidbody rigidbody;
+    float score;
 
     private void Awake()
     {
-        playerInput = GetComponent<PlayerInput>();
+        player = GetComponent<Player>();
+        rigidbody = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -33,13 +36,14 @@ public class PlayerController : MonoBehaviour
 
     void Move()
     {
-        var move = new Vector3(playerInput.GetAxis(PlayerInput.InputActions.Horizontal), 0, playerInput.GetAxis(PlayerInput.InputActions.Vertical));
-        transform.position += move * moveSpeed * Time.deltaTime;
+        var move = new Vector3(player.GetAxis(InputActions.Horizontal), 0, player.GetAxis(InputActions.Vertical));
+        rigidbody.MovePosition(transform.position + move * moveSpeed * Time.fixedDeltaTime);
     }
 
     void Rotate()
     {
-        var direction = new Vector3(playerInput.GetAxis(PlayerInput.InputActions.RightHorizontal), 0, playerInput.GetAxis(PlayerInput.InputActions.RightVertical));
+        //var direction = new Vector3(player.GetAxis(InputActions.RightHorizontal), 0, player.GetAxis(InputActions.RightVertical));
+        var direction = new Vector3(player.GetAxis(InputActions.Horizontal), 0, player.GetAxis(InputActions.Vertical));
 
         if (direction == Vector3.zero) return;
 
@@ -49,14 +53,17 @@ public class PlayerController : MonoBehaviour
 
     void OnAttack()
     {
-        if (playerInput.GetButtonDown(PlayerInput.InputActions.Attack))
+        if (player.GetButtonDown(InputActions.Attack))
         {
             var hit = Physics.OverlapBox(hitBox.transform.position, hitBox.size * 2, hitBox.transform.rotation, 1 << LayerMask.NameToLayer("Enemy"));
 
             for (int i = 0; i < hit.Length; i++)
             {
                 Destroy(hit[i].gameObject);
+                score++;
             }
+
+            ScoreManager.Instance.UpdateScore(player.ID, score);
         }
     }
 }
