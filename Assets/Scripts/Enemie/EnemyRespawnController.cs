@@ -24,22 +24,22 @@ public class EnemyRespawnController : MonoBehaviour
 
         if (stopwatch.ElapsedMilliseconds >= respawnTimeMiliseconds)
         {
-            bool isRespawnHorizontal = randomBoolean();
+            bool isRespawnLeft = randomBoolean();
 
-            float shortRangePosition = Random.Range(40.0f, 50.0f);
+            float shortRangePosition = Random.Range( 40.0f, 50.0f);
             float  longRangePosition = Random.Range(-50.0f, 50.0f);
 
             float xPos = 0;
             float zPos = 0;
 
-            if (isRespawnHorizontal)
+            if (isRespawnLeft)
             {
-                xPos = (randomBoolean() ? shortRangePosition : shortRangePosition * -1);
+                xPos = shortRangePosition;
                 zPos = longRangePosition;
             }
             else
             {
-                zPos = (randomBoolean() ? shortRangePosition : shortRangePosition * -1);
+                zPos = shortRangePosition;
                 xPos = longRangePosition;
             }
 
