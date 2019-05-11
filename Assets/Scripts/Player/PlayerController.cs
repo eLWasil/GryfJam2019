@@ -15,7 +15,10 @@ public class PlayerController : MonoBehaviour
 
     Player player;
     new Rigidbody rigidbody;
-    float score;
+
+    public float Score;
+
+    public PlayerId ID { get { return player.ID; } }
 
     private void Awake()
     {
@@ -48,7 +51,6 @@ public class PlayerController : MonoBehaviour
 
     void Rotate()
     {
-        //var direction = new Vector3(player.GetAxis(InputActions.RightHorizontal), 0, player.GetAxis(InputActions.RightVertical));
         var direction = new Vector3(player.GetAxis(InputActions.Horizontal), 0, player.GetAxis(InputActions.Vertical));
 
         if (direction == Vector3.zero) return;
@@ -65,11 +67,18 @@ public class PlayerController : MonoBehaviour
 
             for (int i = 0; i < hit.Length; i++)
             {
-                Destroy(hit[i].gameObject);
-                score++;
+                var enemy = hit[i].transform.GetComponent<EnemyTrace>();
+
+                if (enemy)
+                {
+                    enemy.ApplyDamage(this, 1);
+                }
+                else
+                {
+                    Destroy(hit[i].gameObject);
+                }
             }
 
-            UIManager.Instance.UpdateScore(player.ID, score);    
         }
     }
 }

@@ -4,62 +4,68 @@ using UnityEngine;
 
 public class EnemyTrace : MonoBehaviour
 {
+    [SerializeField]
+    float scoreForKill = 10;
+
+    [SerializeField]
+    float HP = 2;
+
     public float speed;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    EnemyRespawnController respawnController;
+    new Rigidbody rigidbody;
 
+    bool blockInput;
+
+    private void Awake()
+    {
+        rigidbody = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
+    public void Init(EnemyRespawnController respawnController)
+    {
+        this.respawnController = respawnController;
+    }
+
     void Update()
     {
-        if (!PlayerBase.Instance.IsGameRunning)
+        if (!PlayerBase.Instance.IsGameRunning || blockInput == true)
             return;
 
         var granary = PlayerBase.Instance.gameObject;
 
-        float granaryLeftBorder = granary.transform.position.x - (granary.transform.localScale.x / 2);
-        float granaryRightBorder = granary.transform.position.x + (granary.transform.localScale.x / 2);
-        float granaryTopBorder = granary.transform.position.z + (granary.transform.localScale.z / 2);
-        float granaryBotBorder = granary.transform.position.z - (granary.transform.localScale.z / 2);
-
-        Debug.Log(granaryBotBorder + ", " + granaryLeftBorder + ", " + granaryTopBorder + ", " + granaryRightBorder);
-
-        if (transform.position.x < granaryLeftBorder)
-        {
-            transform.position = new Vector3(transform.position.x + speed, transform.position.y, transform.position.z);
-        }
-        else if (transform.position.x > granaryRightBorder)
-        {
-            transform.position = new Vector3(transform.position.x - speed, transform.position.y, transform.position.z);
-        }
-
-        if (transform.position.z < granaryBotBorder)
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + speed);
-        }
-        else if (transform.position.z > granaryTopBorder)
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - speed);
-        }
-
-        //if (granaryLeftBorder < transform.position.x && granaryRightBorder > transform.position.x)
-        //{
-        //    if (granaryBotBorder < transform.position.z && granaryTopBorder > transform.position.z)
-        //    {
-        //        Debug.Log("Destroyed");
-        //        Destroy(gameObject);
-        //    }
-        //}
+        var direction = (granary.transform.position - transform.position).normalized;
+        transform.position += direction * speed * Time.deltaTime;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void ApplyDamage(PlayerController player, float damage)
     {
-        Debug.Log(other.name);
+        HP -= damage;
 
-        var playerBase = other.GetComponent<PlayerBase>();
+        if (HP <= 0)
+        {
+            player.Score += scoreForKill;
+            UIManager.Instance.UpdateScore(player.ID, player.Score);
+            Destroy(gameObject);
+        }
+        else
+        {
+            rigidbody.AddForce(player.transform.forward * 80, ForceMode.VelocityChange);
+            StartCoroutine(BlockInput());
+        }
+    }
+
+    IEnumerator BlockInput()
+    {
+        blockInput = true;
+        yield return new WaitForSeconds(1);
+        blockInput = false;
+    }
+
+    //private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
+    {
+        var playerBase = collision.transform.GetComponent<PlayerBase>();
 
         if (playerBase == null) return;
 

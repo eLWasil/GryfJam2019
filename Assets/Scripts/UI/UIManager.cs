@@ -7,6 +7,8 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
 
+    public static int stage = 1;
+
     [SerializeField]
     GameObject gameOverScreen;
 

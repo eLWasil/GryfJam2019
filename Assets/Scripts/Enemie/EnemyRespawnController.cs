@@ -8,13 +8,14 @@ public class EnemyRespawnController : MonoBehaviour
     public GameObject enemiePrefab;
 
     [SerializeField]
+    Transform[] spawnPoints;
+
+    [SerializeField]
     private int respawnTimeMiliseconds = 400;
 
     private Stopwatch stopwatch = new Stopwatch();
 
-    private readonly List<EnemyTrace> enemiesList = new List<EnemyTrace>();
-
-    private float timeToStartSpawing = 5;
+    private float timeToStartSpawing = 3;
 
     void Start()
     {
@@ -28,14 +29,6 @@ public class EnemyRespawnController : MonoBehaviour
         stopwatch.Start();
     }
 
-    void InitializePool()
-    {
-        for (int i = 0; i < 20; i++)
-        {
-            var enemy = Instantiate(enemiePrefab, transform).GetComponent<EnemyTrace>();
-        }
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -44,42 +37,18 @@ public class EnemyRespawnController : MonoBehaviour
 
         if (stopwatch.ElapsedMilliseconds >= respawnTimeMiliseconds)
         {
-            bool isRespawnHorizontal = randomBoolean();
+            var position = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
 
-            float shortRangePosition = Random.Range(40.0f, 50.0f);
-            float longRangePosition = Random.Range(-50.0f, 50.0f);
+            var xPosition = position.x + Random.Range(-5f, 5f);
+            var zPosition = position.z + Random.Range(-5f, 5f);
 
-            float xPos = 0;
-            float zPos = 0;
+            position = new Vector3(xPosition, position.y, zPosition);
 
-            if (isRespawnHorizontal)
-            {
-                xPos = (randomBoolean() ? shortRangePosition : shortRangePosition * -1);
-                zPos = longRangePosition;
-            }
-            else
-            {
-                zPos = (randomBoolean() ? shortRangePosition : shortRangePosition * -1);
-                xPos = longRangePosition;
-            }
-
-
-            var enemy = Instantiate(enemiePrefab, new Vector3(xPos, 0, zPos), Quaternion.identity);
+            var enemy = Instantiate(enemiePrefab, position, Quaternion.identity);
             enemy.transform.SetParent(transform);
 
             stopwatch.Restart();
             stopwatch.Start();
         }
-        //Debug.Log("enemies.Count: " + enemies.Count);
-
-    }
-
-    private bool randomBoolean()
-    {
-        if (Random.value >= 0.5)
-        {
-            return true;
-        }
-        return false;
     }
 }
