@@ -5,6 +5,22 @@ using UnityEngine.UI;
 
 public class PlayerBase : MonoBehaviour
 {
+    public static PlayerBase Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Debug.Log("Instance already exist");
+            Destroy(gameObject);
+        }
+
+    }
+
     [SerializeField]
     float startHP = 100;
 
