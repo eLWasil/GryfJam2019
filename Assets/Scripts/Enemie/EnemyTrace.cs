@@ -5,7 +5,6 @@ using UnityEngine;
 public class EnemyTrace : MonoBehaviour
 {
     public float speed;
-    public GameObject granary;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +15,8 @@ public class EnemyTrace : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        var granary = PlayerBase.Instance.gameObject;
+
         float granaryLeftBorder = granary.transform.position.x - (granary.transform.localScale.x / 2);
         float granaryRightBorder = granary.transform.position.x + (granary.transform.localScale.x / 2);
         float granaryTopBorder = granary.transform.position.z + (granary.transform.localScale.z / 2);
