@@ -12,9 +12,6 @@ public class PlayerInput : MonoBehaviour
         pad_2 = 2,
         pad_3 = 3,
         pad_4 = 4,
-        keyboard_1 = 5,
-        keyboard_2 = 6,
-        test = 7
     }
     public enum InputActions
     {
