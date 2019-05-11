@@ -13,13 +13,13 @@ TagManager:
   - UI
   - 
   - 
+  - Player
+  - Enemy
   - 
+  - PlayerHitBox
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Ground
+  - Obstacle
   - 
   - 
   - 

@@ -27,32 +27,28 @@ public class PlayerInput : MonoBehaviour
         Menu = 6
     }
 
-    public PlayerId playerId = PlayerId.none;
+    [SerializeField]
+    private PlayerId playerId = PlayerId.none;
 
-    private Player rewiredPlayer
-    {
-        get
-        {
-            return ReInput.players.GetPlayer((int)playerId - 1);
-        }
-    }
+    private Player RewiredPlayer { get { return ReInput.players.GetPlayer((int)playerId - 1); } }
+
     public bool GetButtonDown(InputActions input)
     {
-        return rewiredPlayer.GetButtonDown(input.ToString());
+        return RewiredPlayer.GetButtonDown(input.ToString());
     }
 
     public bool GetButtonUp(InputActions input)
     {
-        return rewiredPlayer.GetButtonUp(input.ToString());
+        return RewiredPlayer.GetButtonUp(input.ToString());
     }
 
     public bool GetButton(InputActions input)
     {
-        return rewiredPlayer.GetButton(input.ToString());
+        return RewiredPlayer.GetButton(input.ToString());
     }
 
     public float GetAxis(InputActions input)
     {
-        return rewiredPlayer.GetAxis(input.ToString());
+        return RewiredPlayer.GetAxis(input.ToString());
     }
 }
