@@ -62,7 +62,6 @@ public class EnemyTrace : MonoBehaviour
         blockInput = false;
     }
 
-    //private void OnTriggerEnter(Collider other)
     private void OnCollisionEnter(Collision collision)
     {
         var playerBase = collision.transform.GetComponent<PlayerBase>();

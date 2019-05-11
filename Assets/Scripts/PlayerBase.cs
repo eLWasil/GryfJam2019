@@ -7,17 +7,14 @@ public class PlayerBase : MonoBehaviour
 {
     public static PlayerBase Instance { get; private set; }
 
-    [SerializeField]
-    float startHP = 100;
-
-    float currentHP;
+    public float currentHP { get; set; }
 
     public bool IsGameRunning { get { return currentHP > 0; } }
 
     private void Awake()
     {
-        currentHP = startHP;
-        
+        currentHP = 100;
+
         if (Instance == null)
         {
             Instance = this;
@@ -27,7 +24,6 @@ public class PlayerBase : MonoBehaviour
             Debug.Log("Instance already exist");
             Destroy(gameObject);
         }
-
     }
 
     public void ApplyDamage(float damage)
