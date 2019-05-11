@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
                 score++;
             }
 
-            ScoreManager.Instance.UpdateScore(player.ID, score);
+            ScoreManager.Instance.UpdateScore(player.ID, score);    
         }
     }
 }
