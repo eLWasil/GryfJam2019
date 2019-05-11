@@ -10,6 +10,9 @@ public class ScoreManager : MonoBehaviour
     [SerializeField]
     Text[] scoreText;
 
+    [SerializeField]
+    Text hpText;
+
     private void Awake()
     {
         Instance = this;
@@ -23,5 +26,10 @@ public class ScoreManager : MonoBehaviour
             return;
 
         scoreText[id].text = playerID.ToString() + ": " + score;
+    }
+
+    public void UpdateHPValue(float hp)
+    {
+        hpText.text = "HP: " + hp;
     }
 }

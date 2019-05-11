@@ -10,16 +10,16 @@ public class EnemyTrace : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        float granaryLeftBorder  = granary.transform.position.x - (granary.transform.localScale.x / 2);
+        float granaryLeftBorder = granary.transform.position.x - (granary.transform.localScale.x / 2);
         float granaryRightBorder = granary.transform.position.x + (granary.transform.localScale.x / 2);
-        float granaryTopBorder   = granary.transform.position.z + (granary.transform.localScale.z / 2);
-        float granaryBotBorder   = granary.transform.position.z - (granary.transform.localScale.z / 2);
+        float granaryTopBorder = granary.transform.position.z + (granary.transform.localScale.z / 2);
+        float granaryBotBorder = granary.transform.position.z - (granary.transform.localScale.z / 2);
 
         if (transform.position.x < granaryLeftBorder)
         {
@@ -39,16 +39,25 @@ public class EnemyTrace : MonoBehaviour
             transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - speed);
         }
 
-        if (granaryLeftBorder < transform.position.x && granaryRightBorder > transform.position.x)
-        {
-            if (granaryBotBorder < transform.position.z && granaryTopBorder > transform.position.z)
-            {
-                Debug.Log("Destroyed");
-                Destroy(gameObject);
-            }
-        }
-
+        //if (granaryLeftBorder < transform.position.x && granaryRightBorder > transform.position.x)
+        //{
+        //    if (granaryBotBorder < transform.position.z && granaryTopBorder > transform.position.z)
+        //    {
+        //        Debug.Log("Destroyed");
+        //        Destroy(gameObject);
+        //    }
+        //}
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log(other.name);
 
+        var playerBase = other.GetComponent<PlayerBase>();
+
+        if (playerBase == null) return;
+
+        playerBase.ApplyDamage(5);
+        Destroy(gameObject);
+    }
 }
