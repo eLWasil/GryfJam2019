@@ -7,8 +7,17 @@ public class PlayerBase : MonoBehaviour
 {
     public static PlayerBase Instance { get; private set; }
 
+    [SerializeField]
+    float startHP = 100;
+
+    float currentHP;
+
+    public bool IsGameRunning { get { return currentHP > 0; } }
+
     private void Awake()
     {
+        currentHP = startHP;
+        
         if (Instance == null)
         {
             Instance = this;
@@ -21,19 +30,24 @@ public class PlayerBase : MonoBehaviour
 
     }
 
-    [SerializeField]
-    float startHP = 100;
-
-    float currentHP = 100;
-
     public void ApplyDamage(float damage)
     {
-        currentHP -= damage;
-        ScoreManager.Instance.UpdateHPValue(currentHP);
-
         if (currentHP < 0)
+            return;
+
+        currentHP -= damage;
+        UIManager.Instance.UpdateHPValue(currentHP);
+
+        if (currentHP <= 0)
         {
-            Debug.Log("Game Over");
+            UIManager.Instance.ShowGameOverScreen();
+            StartCoroutine(Restart());
         }
+    }
+
+    IEnumerator Restart()
+    {
+        yield return new WaitForSeconds(5);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
 }

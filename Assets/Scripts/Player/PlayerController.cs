@@ -25,12 +25,18 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (!PlayerBase.Instance.IsGameRunning)
+            return;
+
         Rotate();
         OnAttack();
     }
 
     private void FixedUpdate()
     {
+        if (!PlayerBase.Instance.IsGameRunning)
+            return;
+
         Move();
     }
 
@@ -63,7 +69,7 @@ public class PlayerController : MonoBehaviour
                 score++;
             }
 
-            ScoreManager.Instance.UpdateScore(player.ID, score);    
+            UIManager.Instance.UpdateScore(player.ID, score);    
         }
     }
 }

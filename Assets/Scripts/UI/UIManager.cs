@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScoreManager : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
-    public static ScoreManager Instance { get; private set; }
+    public static UIManager Instance { get; private set; }
+
+    [SerializeField]
+    GameObject gameOverScreen;
 
     [SerializeField]
     Text[] scoreText;
@@ -16,6 +19,11 @@ public class ScoreManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Start()
+    {
+        gameOverScreen.SetActive(false);
     }
 
     public void UpdateScore(PlayerId playerID, float score)
@@ -31,5 +39,10 @@ public class ScoreManager : MonoBehaviour
     public void UpdateHPValue(float hp)
     {
         hpText.text = "HP: " + hp;
+    }
+
+    public void ShowGameOverScreen()
+    {
+        gameOverScreen.SetActive(true);
     }
 }

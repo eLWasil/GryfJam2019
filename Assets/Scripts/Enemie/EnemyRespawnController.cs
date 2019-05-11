@@ -7,14 +7,24 @@ public class EnemyRespawnController : MonoBehaviour
 {
     public GameObject enemiePrefab;
 
+    [SerializeField]
+    private int respawnTimeMiliseconds = 400;
+
     private Stopwatch stopwatch = new Stopwatch();
-    private const int respawnTimeMiliseconds = 400;
 
     private readonly List<EnemyTrace> enemiesList = new List<EnemyTrace>();
 
-    // Start is called before the first frame update
+    private float timeToStartSpawing = 5;
+
     void Start()
     {
+        StartCoroutine(EnableSpawning());
+    }
+
+    IEnumerator EnableSpawning()
+    {
+        yield return new WaitForSeconds(timeToStartSpawing);
+
         stopwatch.Start();
     }
 
@@ -29,7 +39,8 @@ public class EnemyRespawnController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //UnityEngine.Debug.Log("stopwatch.ElapsedMilliseconds = " + stopwatch.ElapsedMilliseconds);
+        if (!PlayerBase.Instance.IsGameRunning)
+            return;
 
         if (stopwatch.ElapsedMilliseconds >= respawnTimeMiliseconds)
         {

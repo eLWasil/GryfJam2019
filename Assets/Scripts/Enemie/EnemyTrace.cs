@@ -15,6 +15,9 @@ public class EnemyTrace : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!PlayerBase.Instance.IsGameRunning)
+            return;
+
         var granary = PlayerBase.Instance.gameObject;
 
         float granaryLeftBorder = granary.transform.position.x - (granary.transform.localScale.x / 2);
